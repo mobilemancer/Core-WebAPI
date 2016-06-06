@@ -13,29 +13,47 @@ namespace ActionResults.Controllers
         }
 
         [HttpGet("{model}")]
-        public IActionResult Get(string model)
+        public IActionResult Get(string name)
         {
-            //if (model == "IG-88")
-            //{
-            //    return new OkObjectResult(new Droid
-            //    {
-            //        Id = 1,
-            //        Name = "IG-88",
-            //        ProductSeries = "IG-86",
-            //        Armaments = new List<string> { "Vibroblades", "Heavy pulse cannon" }
-            //    });
-            //}
-            if (DroidRepo.Exists(model))
+            if (DroidRepo.Exists(name))
             {
-                return new OkObjectResult(DroidRepo.Get(model));
+                return new OkObjectResult(DroidRepo.Get(name));
             }
             return new NotFoundObjectResult(
                 new Error
                 {
                     Code = 404,
-                    Description = $"{model} - No such Droid in database!"
+                    Description = $"{name} - No such Droid in database!"
                 }
             );
+        }
+
+        [HttpPost]
+        public IActionResult Post([FromBody] Droid droid)
+        {
+            if (!ModelState.IsValid)
+            {
+                return new BadRequestObjectResult(new Error {
+                    Code = 400,
+                    Description = "Invalid payload"
+                });
+            }
+
+            var result = DroidRepo.Put(droid);
+
+            if (!result)
+            {
+                return new BadRequestObjectResult(new Error
+                {
+                    Code = 409,
+                    Description = "Entity already exists"
+                });
+            }
+
+
+            var routeResult = new CreatedAtRouteResult(new { controller = "Droid", model = droid.Name }, droid);
+            return routeResult;
+
         }
 
     }

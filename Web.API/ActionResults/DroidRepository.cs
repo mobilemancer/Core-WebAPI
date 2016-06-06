@@ -8,13 +8,14 @@ namespace ActionResults
     public class DroidRepository
     {
         public Dictionary<string, Droid> repo { get; set; }
+        private static int id = 0;
         public DroidRepository()
         {
             repo = new Dictionary<string, Droid>();
 
             var ig88 = new Droid
             {
-                Id = 1,
+                Id = id++,
                 Name = "IG-88",
                 ProductSeries = "IG-86",
                 Armaments = new List<string> { "Vibroblades", "Heavy pulse cannon" }
@@ -48,6 +49,22 @@ namespace ActionResults
 
             }
             return null;
+        }
+
+        public bool Put(Droid newDroid)
+        {
+            Droid droid = null;
+            repo.TryGetValue(newDroid.Name, out droid);
+            if(droid != null)
+            {
+                return false;
+            }
+
+            newDroid.Id = id++;
+            repo.Add(newDroid.Name, newDroid);
+
+            return true;
+
         }
     }
 
