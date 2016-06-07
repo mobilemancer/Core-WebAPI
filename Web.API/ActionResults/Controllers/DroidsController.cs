@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using ActionResults.Repository;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ActionResults.Controllers
@@ -6,13 +6,13 @@ namespace ActionResults.Controllers
     [Route("api/[controller]")]
     public class DroidsController : Controller
     {
-        DroidRepository DroidRepo;
-        public DroidsController()
+        IDroidRepository DroidRepo;
+        public DroidsController(IDroidRepository repository)
         {
-            DroidRepo = new DroidRepository();
+            DroidRepo = repository;
         }
 
-        [HttpGet("{model}")]
+        [HttpGet("{name}")]
         public IActionResult Get(string name)
         {
             if (DroidRepo.Exists(name))
@@ -51,7 +51,7 @@ namespace ActionResults.Controllers
             }
 
 
-            var routeResult = new CreatedAtRouteResult(new { controller = "Droid", model = droid.Name }, droid);
+            var routeResult = new CreatedAtRouteResult(new { controller = "Droids", model = droid.Name }, droid);
             return routeResult;
 
         }

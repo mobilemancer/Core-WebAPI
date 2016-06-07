@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
-namespace ActionResults
+namespace ActionResults.Repository
 {
-    public class DroidRepository
+    public class DroidRepository : IDroidRepository
     {
-        public Dictionary<string, Droid> repo { get; set; }
+        private static Dictionary<string, Droid> repo { get; set; }
         private static int id = 0;
         public DroidRepository()
         {
@@ -55,7 +52,7 @@ namespace ActionResults
         {
             Droid droid = null;
             repo.TryGetValue(newDroid.Name, out droid);
-            if(droid != null)
+            if (droid != null)
             {
                 return false;
             }
@@ -68,13 +65,6 @@ namespace ActionResults
         }
     }
 
-    public class Droid
-    {
-
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public string ProductSeries { get; set; }
-        public List<string> Armaments { get; set; }
-    }
+   
 
 }
