@@ -6,26 +6,53 @@ namespace ActionResults.Controllers
     [Route("api/[controller]")]
     public class DroidsController : Controller
     {
-        IDroidRepository DroidRepo;
+        readonly IDroidRepository droidRepo;
         public DroidsController(IDroidRepository repository)
         {
-            DroidRepo = repository;
+            droidRepo = repository;
+        }
+
+        [HttpGet]
+        public IActionResult Get()
+        {
+            var droids = droidRepo.GetAll();
+            return new OkObjectResult(droids);
+        }
+
+        [HttpGet("{id:int}")]
+        public IActionResult Get(int id)
+        {
+            var droid = droidRepo.Get(id);
+
+            if (droid == null)
+            {
+                return new NotFoundObjectResult(
+                    new Error
+                    {
+                        Code = 404,
+                        Description = $"Droid with id: {id} - Not found in database!"
+                    }
+                );
+            }
+
+            return new OkObjectResult(droid);
         }
 
         [HttpGet("{name}")]
         public IActionResult Get(string name)
         {
-            if (DroidRepo.Exists(name))
+            var droid = droidRepo.Get(name);
+            if (droid == null)
             {
-                return new OkObjectResult(DroidRepo.Get(name));
+                return new NotFoundObjectResult(
+                    new Error
+                    {
+                        Code = 404,
+                        Description = $"{name} - No such Droid in database!"
+                    }
+                );
             }
-            return new NotFoundObjectResult(
-                new Error
-                {
-                    Code = 404,
-                    Description = $"{name} - No such Droid in database!"
-                }
-            );
+            return new OkObjectResult(droid);
         }
 
         [HttpPost]
@@ -33,13 +60,14 @@ namespace ActionResults.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return new BadRequestObjectResult(new Error {
+                return new BadRequestObjectResult(new Error
+                {
                     Code = 400,
                     Description = "Invalid payload"
                 });
             }
 
-            var result = DroidRepo.Put(droid);
+            var result = droidRepo.Put(droid);
 
             if (!result)
             {
@@ -53,9 +81,7 @@ namespace ActionResults.Controllers
 
             var routeResult = new CreatedAtRouteResult(new { controller = "Droids", model = droid.Name }, droid);
             return routeResult;
-
         }
-
     }
 
 
