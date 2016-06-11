@@ -6,7 +6,7 @@ namespace ActionResults.Repository
     public class DroidRepository : IDroidRepository
     {
         private static Dictionary<string, Droid> repo { get; set; }
-        private static int id = 0;
+        private static int id;
         public DroidRepository()
         {
             repo = new Dictionary<string, Droid>();
@@ -23,10 +23,10 @@ namespace ActionResults.Repository
 
         }
 
-        //public bool Exists(string name)
-        //{
-        //    return repo.ContainsKey(name);
-        //}
+        public IEnumerable<Droid> GetAll()
+        {
+            return repo.Values;
+        }
 
         public bool Delete(string name)
         {
@@ -35,10 +35,19 @@ namespace ActionResults.Repository
 
         public Droid Get(string name)
         {
-            Droid droid;
-            repo.TryGetValue(name, out droid);
+            Droid droid = null;
+            if (repo.ContainsKey(name))
+            {
+                repo.TryGetValue(name, out droid);
+            }
             return droid;
         }
+
+        public Droid Get(int id)
+        {
+            return repo.Values.FirstOrDefault(d => d.Id == id);
+        }
+
 
         public bool Put(Droid newDroid)
         {

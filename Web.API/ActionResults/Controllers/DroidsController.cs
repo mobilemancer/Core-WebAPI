@@ -6,10 +6,36 @@ namespace ActionResults.Controllers
     [Route("api/[controller]")]
     public class DroidsController : Controller
     {
-        IDroidRepository DroidRepo;
+        readonly IDroidRepository droidRepo;
         public DroidsController(IDroidRepository repository)
         {
-            DroidRepo = repository;
+            droidRepo = repository;
+        }
+
+        [HttpGet]
+        public IActionResult Get()
+        {
+            var droids = droidRepo.GetAll();
+            return new OkObjectResult(droids);
+        }
+
+        [HttpGet("{id:int}")]
+        public IActionResult Get(int id)
+        {
+            var droid = droidRepo.Get(id);
+
+            if (droid == null)
+            {
+                return new NotFoundObjectResult(
+                    new Error
+                    {
+                        Code = 404,
+                        Description = $"Droid with id: {id} - Not found in database!"
+                    }
+                );
+            }
+
+            return new OkObjectResult(droid);
         }
 
         [HttpGet("{name}")]
@@ -41,7 +67,7 @@ namespace ActionResults.Controllers
                 });
             }
 
-            var result = DroidRepo.Put(droid);
+            var result = droidRepo.Put(droid);
 
             if (!result)
             {
@@ -98,7 +124,6 @@ namespace ActionResults.Controllers
 
             return new OkObjectResult(droid);
         }
-
     }
 
 
