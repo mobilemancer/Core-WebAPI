@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace ActionResults.Repository
 {
@@ -22,30 +23,21 @@ namespace ActionResults.Repository
 
         }
 
-        public bool Exists(string name)
-        {
-            return repo.ContainsKey(name);
-        }
+        //public bool Exists(string name)
+        //{
+        //    return repo.ContainsKey(name);
+        //}
 
         public bool Delete(string name)
         {
-            if (repo.ContainsKey(name))
-            {
-                return repo.Remove(name);
-            }
-            return false;
+            return repo.Remove(name);
         }
 
         public Droid Get(string name)
         {
-            if (repo.ContainsKey(name))
-            {
-                Droid droid;
-                repo.TryGetValue(name, out droid);
-                return droid;
-
-            }
-            return null;
+            Droid droid;
+            repo.TryGetValue(name, out droid);
+            return droid;
         }
 
         public bool Put(Droid newDroid)
@@ -61,10 +53,17 @@ namespace ActionResults.Repository
             repo.Add(newDroid.Name, newDroid);
 
             return true;
+        }
 
+        public Droid Update(Droid droid)
+        {
+            if (repo.ContainsKey(droid.Name))
+            {
+                repo[droid.Name] = droid;
+                return droid;
+            }
+            return null;
         }
     }
-
-   
 
 }
