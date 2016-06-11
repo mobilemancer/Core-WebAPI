@@ -1,5 +1,6 @@
 ﻿using ActionResults.Repository;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace ActionResults.Controllers
 {
@@ -29,8 +30,8 @@ namespace ActionResults.Controllers
                 return new NotFoundObjectResult(
                     new Error
                     {
-                        Code = 404,
-                        Description = $"Droid with id: {id} - Not found in database!"
+                        HttpCode = 404,
+                        Message = $"Droid with id: {id} - Not found in database!"
                     }
                 );
             }
@@ -41,18 +42,18 @@ namespace ActionResults.Controllers
         [HttpGet("{name}")]
         public IActionResult Get(string name)
         {
-            var droid = DroidRepo.Get(name);
+            var droid = droidRepo.Get(name);
             if (droid == null)
             {
                 return new NotFoundObjectResult(
                     new Error
                     {
-                        Code = 404,
-                        Description = $"{name} - No such Droid in database!"
+                        HttpCode = 404,
+                        Message = $"{name} - No such Droid in database!"
                     }
                 );
             }
-            return new OkObjectResult(DroidRepo.Get(name));
+            return new OkObjectResult(droidRepo.Get(name));
         }
 
         [HttpPost]
@@ -62,8 +63,8 @@ namespace ActionResults.Controllers
             {
                 return new BadRequestObjectResult(new Error
                 {
-                    Code = 400,
-                    Description = "Invalid payload"
+                    HttpCode = 400,
+                    Message = $"Invalid payload: {ModelState}"
                 });
             }
 
@@ -73,8 +74,8 @@ namespace ActionResults.Controllers
             {
                 return new BadRequestObjectResult(new Error
                 {
-                    Code = 409,
-                    Description = "Droid already exists"
+                    HttpCode = 409,
+                    Message = $"Droid with name: '{droid.Name}' already exists"
                 });
             }
 
@@ -85,14 +86,14 @@ namespace ActionResults.Controllers
         [HttpDelete("{name}")]
         public IActionResult Delete(string name)
         {
-            var result = DroidRepo.Delete(name);
+            var result = droidRepo.Delete(name);
 
             if (!result)
             {
                 return new BadRequestObjectResult(new Error
                 {
-                    Code = 404,
-                    Description = "No such Droid in database!"
+                    HttpCode = 404,
+                    Message = "No such Droid in database!"
                 });
             }
 
@@ -106,19 +107,19 @@ namespace ActionResults.Controllers
             {
                 return new BadRequestObjectResult(new Error
                 {
-                    Code = 400,
-                    Description = "Invalid payload"
+                    HttpCode = 400,
+                    Message = "Invalid payload"
                 });
             }
 
-            var result = DroidRepo.Update(droid);
+            var result = droidRepo.Update(droid);
 
             if(result == null)
             {
                 return new NotFoundObjectResult(new Error
                 {
-                    Code = 410,
-                    Description = "Could not find Droid in database!"
+                    HttpCode = 410,
+                    Message = "Could not find Droid in database!"
                 });
             }
 
@@ -129,7 +130,7 @@ namespace ActionResults.Controllers
 
     public class Error
     {
-        public int Code { get; set; }
-        public string Description { get; set; }
+        public int HttpCode { get; set; }
+        public string Message { get; set; }
     }
 }
