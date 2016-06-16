@@ -1,4 +1,4 @@
-﻿using ActionResults.Repository;
+﻿using DroidRepository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -30,7 +30,7 @@ namespace ActionResults
                 .AddJsonOptions(option =>
                 option.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver());
 
-            services.AddSingleton<IDroidRepository, DroidRepository>();
+            services.AddSingleton<IDroidRepository, DroidRepository.DroidRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
