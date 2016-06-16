@@ -1,6 +1,5 @@
 ﻿using ActionResults.Repository;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 
 namespace ActionResults.Controllers
 {
@@ -14,6 +13,7 @@ namespace ActionResults.Controllers
         }
 
         [HttpGet]
+        [Route("~/thesearethedroids")]
         public IActionResult Get()
         {
             var droids = droidRepo.GetAll();
