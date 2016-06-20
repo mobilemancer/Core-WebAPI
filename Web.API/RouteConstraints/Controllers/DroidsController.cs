@@ -108,28 +108,47 @@ namespace RouteConstraints.Controllers
             return new OkObjectResult(droids);
         }
 
-        [HttpGet("{entryDate:datetime}")]
-        public IActionResult GetByEntryDate(DateTime entryDate)
-        {
-            var droids = droidRepo.GetAllFromEntryDate(entryDate);
-            if (droids == null || droids?.Count() == 0)
-                {
-                return new NotFoundObjectResult(
-                    new Error
-                    {
-                        HttpCode = 404,
-                        Message = $"No Droids found in database created after {entryDate}!"
-                    }
-                );
-            }
-            return new OkObjectResult(droids);
-        }
+        //[HttpGet("{entryDate:datetime}")]
+        //public IActionResult GetByEntryDate(DateTime entryDate)
+        //{
+        //    var droids = droidRepo.GetAllFromEntryDate(entryDate);
+        //    if (droids == null || droids?.Count() == 0)
+        //        {
+        //        return new NotFoundObjectResult(
+        //            new Error
+        //            {
+        //                HttpCode = 404,
+        //                Message = $"No Droids found in database created after {entryDate}!"
+        //            }
+        //        );
+        //    }
+        //    return new OkObjectResult(droids);
+        //}
 
 
-        [HttpGet("{height:decimal}")]
-        public IActionResult GetByHeight(decimal height)
+        //[HttpGet("{height:decimal}")]
+        //public IActionResult GetByHeightDecimal(decimal height)
+        //{
+        //    var droids = droidRepo.GetAllTallerThan(height);
+        //    if (droids == null || droids?.Count() == 0)
+        //    {
+        //        return new NotFoundObjectResult(
+        //            new Error
+        //            {
+        //                HttpCode = 404,
+        //                Message = $"No Droids found in database taller than {height}!"
+        //            }
+        //        );
+        //    }
+        //    return new OkObjectResult(droids);
+        //}
+
+
+        [HttpGet("{height:double}")]
+        public IActionResult GetByHeightDouble(double height)
         {
-            var droids = droidRepo.GetAllTallerThan(height);
+            decimal convertedHeight = (decimal)height;
+            var droids = droidRepo.GetAllTallerThan(convertedHeight);
             if (droids == null || droids?.Count() == 0)
             {
                 return new NotFoundObjectResult(
@@ -144,25 +163,61 @@ namespace RouteConstraints.Controllers
         }
 
 
-
-
-
-        [HttpGet("{name}")]
-        public IActionResult Get(string name)
+        [HttpGet("{height:float}")]
+        public IActionResult GetByHeightFloat(float height)
         {
-            var droid = droidRepo.Get(name);
-            if (droid == null)
+            decimal convertedHeight = (decimal)height;
+            var droids = droidRepo.GetAllTallerThan(convertedHeight);
+            if (droids == null || droids?.Count() == 0)
             {
                 return new NotFoundObjectResult(
                     new Error
                     {
                         HttpCode = 404,
-                        Message = $"{name} - No such Droid in database!"
+                        Message = $"No Droids found in database taller than {height}!"
                     }
                 );
             }
-            return new OkObjectResult(droidRepo.Get(name));
+            return new OkObjectResult(droids);
         }
+
+
+        [HttpGet("{imperialId:guid}")]
+        public IActionResult GetByImperialId(Guid imperialId)
+        {
+            var droids = droidRepo.GetByImperialId(imperialId);
+            if (droids == null)
+            {
+                return new NotFoundObjectResult(
+                    new Error
+                    {
+                        HttpCode = 404,
+                        Message = $"No Droid found in database with an Imperial ID of {imperialId}!"
+                    }
+                );
+            }
+            return new OkObjectResult(droids);
+        }
+
+
+
+
+        //[HttpGet("{name}")]
+        //public IActionResult Get(string name)
+        //{
+        //    var droid = droidRepo.Get(name);
+        //    if (droid == null)
+        //    {
+        //        return new NotFoundObjectResult(
+        //            new Error
+        //            {
+        //                HttpCode = 404,
+        //                Message = $"{name} - No such Droid in database!"
+        //            }
+        //        );
+        //    }
+        //    return new OkObjectResult(droidRepo.Get(name));
+        //}
 
         [HttpPost]
         public IActionResult Post([FromBody] Droid droid)
