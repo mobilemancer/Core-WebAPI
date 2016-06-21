@@ -200,6 +200,11 @@ namespace RouteConstraints.Controllers
             return new OkObjectResult(droids);
         }
 
+        /// <summary>
+        /// Guid as a constraint
+        /// </summary>
+        /// <param name="contractId">imperial contract id</param>
+        /// <returns>an eventual droid matching given contract id</returns>
         [HttpGet("{contractId:guid}")]
         public IActionResult GetByImperialContractId(Guid contractId)
         {
@@ -242,18 +247,12 @@ namespace RouteConstraints.Controllers
         }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
+        /// <summary>
+        /// Using a string with minlenght and maxlength to search for armaments
+        /// </summary>
+        /// <param name="droidId">droid id</param>
+        /// <param name="armament">armament search string</param>
+        /// <returns></returns>
         [HttpGet("{droidId:int}/{armament:minlength(2):maxlength(4)}")]
         public IActionResult GetSpecificArmament(int droidId, string armament)
         {
@@ -269,27 +268,31 @@ namespace RouteConstraints.Controllers
                 );
             }
 
-            var matchingArmaments = droid.Armaments.Where(a => a.StartsWith(armament));
+            var matchingArmaments = droid.Armaments.Where(a => a.Contains(armament));
             return new OkObjectResult(matchingArmaments);
         }
 
-
-        //[HttpGet("{name}")]
-        //public IActionResult Get(string name)
-        //{
-        //    var droid = droidRepo.Get(name);
-        //    if (droid == null)
-        //    {
-        //        return new NotFoundObjectResult(
-        //            new Error
-        //            {
-        //                HttpCode = 404,
-        //                Message = $"{name} - No such Droid in database!"
-        //            }
-        //        );
-        //    }
-        //    return new OkObjectResult(droidRepo.Get(name));
-        //}
+        /// <summary>
+        /// String of a specific length used as a constraint
+        /// </summary>
+        /// <param name="name">droid name</param>
+        /// <returns>an eventual droid matching the given name</returns>
+        [HttpGet("{name:length(5)}")]
+        public IActionResult Get(string name)
+        {
+            var droid = droidRepo.Get(name);
+            if (droid == null)
+            {
+                return new NotFoundObjectResult(
+                    new Error
+                    {
+                        HttpCode = 404,
+                        Message = $"{name} - No such Droid in database!"
+                    }
+                );
+            }
+            return new OkObjectResult(droidRepo.Get(name));
+        }
 
         [HttpPost]
         public IActionResult Post([FromBody] Droid droid)
