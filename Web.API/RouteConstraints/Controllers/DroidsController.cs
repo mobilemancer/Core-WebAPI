@@ -59,8 +59,8 @@ namespace RouteConstraints.Controllers
         /// </summary>
         /// <param name="id">droid id</param>
         /// <returns>A droid with a specific Id</returns>
-        [HttpGet("{id:int}")]
-        public IActionResult Get(int id)
+        [HttpGet("{id:int}", Order = 1)]
+        public IActionResult GetById(int id)
         {
             var droid = droidRepo.Get(id);
 
@@ -108,43 +108,57 @@ namespace RouteConstraints.Controllers
             return new OkObjectResult(droids);
         }
 
-        //[HttpGet("{entryDate:datetime}")]
-        //public IActionResult GetByEntryDate(DateTime entryDate)
-        //{
-        //    var droids = droidRepo.GetAllFromEntryDate(entryDate);
-        //    if (droids == null || droids?.Count() == 0)
-        //        {
-        //        return new NotFoundObjectResult(
-        //            new Error
-        //            {
-        //                HttpCode = 404,
-        //                Message = $"No Droids found in database created after {entryDate}!"
-        //            }
-        //        );
-        //    }
-        //    return new OkObjectResult(droids);
-        //}
 
+        /// <summary>
+        /// DateTime as a constraint
+        /// </summary>
+        /// <param name="entryDate">date of registration in the galactic registry</param>
+        /// <returns>all droids registered in the galactic registry after a specified date</returns>
+        [HttpGet("{entryDate:datetime}")]
+        public IActionResult GetByEntryDate(DateTime entryDate)
+        {
+            var droids = droidRepo.GetAllFromEntryDate(entryDate);
+            if (droids == null || droids?.Count() == 0)
+            {
+                return new NotFoundObjectResult(
+                    new Error
+                    {
+                        HttpCode = 404,
+                        Message = $"No Droids found in database created after {entryDate}!"
+                    }
+                );
+            }
+            return new OkObjectResult(droids);
+        }
 
-        //[HttpGet("{height:decimal}")]
-        //public IActionResult GetByHeightDecimal(decimal height)
-        //{
-        //    var droids = droidRepo.GetAllTallerThan(height);
-        //    if (droids == null || droids?.Count() == 0)
-        //    {
-        //        return new NotFoundObjectResult(
-        //            new Error
-        //            {
-        //                HttpCode = 404,
-        //                Message = $"No Droids found in database taller than {height}!"
-        //            }
-        //        );
-        //    }
-        //    return new OkObjectResult(droids);
-        //}
+        /// <summary>
+        /// Decimal as a constraint
+        /// </summary>
+        /// <param name="height">a given height</param>
+        /// <returns>all droids over a given height</returns>
+        [HttpGet("{height:decimal}", Order = 7)]
+        public IActionResult GetByHeightDecimal(decimal height)
+        {
+            var droids = droidRepo.GetAllTallerThan(height);
+            if (droids == null || droids?.Count() == 0)
+            {
+                return new NotFoundObjectResult(
+                    new Error
+                    {
+                        HttpCode = 404,
+                        Message = $"No Droids found in database taller than {height}!"
+                    }
+                );
+            }
+            return new OkObjectResult(droids);
+        }
 
-
-        [HttpGet("{height:double}")]
+        /// <summary>
+        /// Double as a constraint
+        /// </summary>
+        /// <param name="height">a given height</param>
+        /// <returns>all droids over a given height</returns>
+        [HttpGet("{height:double}", Order = 3)]
         public IActionResult GetByHeightDouble(double height)
         {
             decimal convertedHeight = (decimal)height;
@@ -163,7 +177,12 @@ namespace RouteConstraints.Controllers
         }
 
 
-        [HttpGet("{height:float}")]
+        /// <summary>
+        /// Float as a constraint
+        /// </summary>
+        /// <param name="height">a given height</param>
+        /// <returns>all droids over a given height</returns>
+        [HttpGet("{height:float}", Order = 4)]
         public IActionResult GetByHeightFloat(float height)
         {
             decimal convertedHeight = (decimal)height;
@@ -181,18 +200,41 @@ namespace RouteConstraints.Controllers
             return new OkObjectResult(droids);
         }
 
-
-        [HttpGet("{imperialId:guid}")]
-        public IActionResult GetByImperialId(Guid imperialId)
+        [HttpGet("{contractId:guid}")]
+        public IActionResult GetByImperialContractId(Guid contractId)
         {
-            var droids = droidRepo.GetByImperialId(imperialId);
-            if (droids == null)
+            var droid = droidRepo.GetByImperialId(contractId);
+            if (droid == null)
             {
                 return new NotFoundObjectResult(
                     new Error
                     {
                         HttpCode = 404,
-                        Message = $"No Droid found in database with an Imperial ID of {imperialId}!"
+                        Message = $"No Droid found in database with a imperial contract id of {contractId}!"
+                    }
+                );
+            }
+            return new OkObjectResult(droid);
+
+        }
+
+
+        /// <summary>
+        /// Long as a constraint
+        /// </summary>
+        /// <param name="creditBalance">an credit limit</param>
+        /// <returns>any droid with a given credit balance over given limit</returns>
+        [HttpGet("{creditBalance:long}", Order = 0)]
+        public IActionResult GetByCreditBalance(long creditBalance)
+        {
+            IEnumerable<Droid> droids = droidRepo.GetByCreditBalance(creditBalance);
+            if (droids == null || droids?.Count() == 0)
+            {
+                return new NotFoundObjectResult(
+                    new Error
+                    {
+                        HttpCode = 404,
+                        Message = $"No Droid found in database with a credit balance over {creditBalance}!"
                     }
                 );
             }
@@ -200,6 +242,36 @@ namespace RouteConstraints.Controllers
         }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+        [HttpGet("{droidId:int}/{armament:minlength(2):maxlength(4)}")]
+        public IActionResult GetSpecificArmament(int droidId, string armament)
+        {
+            var droid = droidRepo.Get(droidId);
+            if (droid == null)
+            {
+                return new NotFoundObjectResult(
+                    new Error
+                    {
+                        HttpCode = 404,
+                        Message = $"Droid with id: {droidId} - Not found in database!"
+                    }
+                );
+            }
+
+            var matchingArmaments = droid.Armaments.Where(a => a.StartsWith(armament));
+            return new OkObjectResult(matchingArmaments);
+        }
 
 
         //[HttpGet("{name}")]
@@ -251,7 +323,7 @@ namespace RouteConstraints.Controllers
         {
             var result = droidRepo.Delete(name);
 
-            if (!result)
+            if (result == null)
             {
                 return new BadRequestObjectResult(new Error
                 {

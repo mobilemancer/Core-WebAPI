@@ -88,7 +88,7 @@ namespace ActionResults.Controllers
         {
             var result = droidRepo.Delete(name);
 
-            if (!result)
+            if (result == null)
             {
                 return new BadRequestObjectResult(new Error
                 {
