@@ -67,7 +67,7 @@ namespace RouteConstraints.Controllers
             if (droid == null)
             {
                 return new NotFoundObjectResult(
-                    new Error
+                    new Error.Repository.Error
                     {
                         HttpCode = 404,
                         Message = $"Droid with id: {id} - Not found in database!"
@@ -90,7 +90,7 @@ namespace RouteConstraints.Controllers
             if (droids == null)
             {
                 return new NotFoundObjectResult(
-                    new Error
+                    new Error.Repository.Error
                     {
                         HttpCode = 404,
                         Message = $"No Droids found in database!"
@@ -121,7 +121,7 @@ namespace RouteConstraints.Controllers
             if (droids == null || droids?.Count() == 0)
             {
                 return new NotFoundObjectResult(
-                    new Error
+                    new Error.Repository.Error
                     {
                         HttpCode = 404,
                         Message = $"No Droids found in database created after {entryDate}!"
@@ -143,7 +143,7 @@ namespace RouteConstraints.Controllers
             if (droids == null || droids?.Count() == 0)
             {
                 return new NotFoundObjectResult(
-                    new Error
+                    new Error.Repository.Error
                     {
                         HttpCode = 404,
                         Message = $"No Droids found in database taller than {height}!"
@@ -166,7 +166,7 @@ namespace RouteConstraints.Controllers
             if (droids == null || droids?.Count() == 0)
             {
                 return new NotFoundObjectResult(
-                    new Error
+                    new Error.Repository.Error
                     {
                         HttpCode = 404,
                         Message = $"No Droids found in database taller than {height}!"
@@ -190,7 +190,7 @@ namespace RouteConstraints.Controllers
             if (droids == null || droids?.Count() == 0)
             {
                 return new NotFoundObjectResult(
-                    new Error
+                    new Error.Repository.Error
                     {
                         HttpCode = 404,
                         Message = $"No Droids found in database taller than {height}!"
@@ -212,7 +212,7 @@ namespace RouteConstraints.Controllers
             if (droid == null)
             {
                 return new NotFoundObjectResult(
-                    new Error
+                    new Error.Repository.Error
                     {
                         HttpCode = 404,
                         Message = $"No Droid found in database with a imperial contract id of {contractId}!"
@@ -236,7 +236,7 @@ namespace RouteConstraints.Controllers
             if (droids == null || droids?.Count() == 0)
             {
                 return new NotFoundObjectResult(
-                    new Error
+                    new Error.Repository.Error
                     {
                         HttpCode = 404,
                         Message = $"No Droid found in database with a credit balance over {creditBalance}!"
@@ -260,7 +260,7 @@ namespace RouteConstraints.Controllers
             if (droid == null)
             {
                 return new NotFoundObjectResult(
-                    new Error
+                    new Error.Repository.Error
                     {
                         HttpCode = 404,
                         Message = $"Droid with id: {droidId} - Not found in database!"
@@ -284,7 +284,7 @@ namespace RouteConstraints.Controllers
             if (droid == null)
             {
                 return new NotFoundObjectResult(
-                    new Error
+                    new Error.Repository.Error
                     {
                         HttpCode = 404,
                         Message = $"{name} - No such Droid in database!"
@@ -299,7 +299,7 @@ namespace RouteConstraints.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return new BadRequestObjectResult(new Error
+                return new BadRequestObjectResult(new Error.Repository.Error
                 {
                     HttpCode = 400,
                     Message = $"Invalid payload: {ModelState}"
@@ -310,7 +310,7 @@ namespace RouteConstraints.Controllers
 
             if (!result)
             {
-                return new BadRequestObjectResult(new Error
+                return new BadRequestObjectResult(new Error.Repository.Error
                 {
                     HttpCode = 409,
                     Message = $"Droid with name: '{droid.Name}' already exists"
@@ -328,7 +328,7 @@ namespace RouteConstraints.Controllers
 
             if (result == null)
             {
-                return new BadRequestObjectResult(new Error
+                return new BadRequestObjectResult(new Error.Repository.Error
                 {
                     HttpCode = 404,
                     Message = "No such Droid in database!"
@@ -343,7 +343,7 @@ namespace RouteConstraints.Controllers
         {
             if (!ModelState.IsValid || name != droid.Name)
             {
-                return new BadRequestObjectResult(new Error
+                return new BadRequestObjectResult(new Error.Repository.Error
                 {
                     HttpCode = 400,
                     Message = "Invalid payload"
@@ -354,7 +354,7 @@ namespace RouteConstraints.Controllers
 
             if (result == null)
             {
-                return new NotFoundObjectResult(new Error
+                return new NotFoundObjectResult(new Error.Repository.Error
                 {
                     HttpCode = 410,
                     Message = "Could not find Droid in database!"
@@ -366,9 +366,9 @@ namespace RouteConstraints.Controllers
     }
 
 
-    public class Error
-    {
-        public int HttpCode { get; set; }
-        public string Message { get; set; }
-    }
+    //public class Error
+    //{
+    //    public int HttpCode { get; set; }
+    //    public string Message { get; set; }
+    //}
 }
