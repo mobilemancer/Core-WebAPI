@@ -33,7 +33,7 @@ namespace RouteConstraints
                 option.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver());
 
             services.AddSingleton<IDroidRepository, DroidRepository.DroidRepository>();
-            //services.AddSingleton<IErrorRepository, ErrorRepository>();
+            services.AddSingleton<IErrorRepository, ErrorRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
