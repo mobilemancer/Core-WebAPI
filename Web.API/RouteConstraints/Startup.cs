@@ -6,7 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Serialization;
-
+using RouteConstraints.Models;
 
 namespace RouteConstraints
 {
@@ -34,6 +34,8 @@ namespace RouteConstraints
 
             services.AddSingleton<IDroidRepository, DroidRepository.DroidRepository>();
             services.AddSingleton<IErrorRepository, ErrorRepository>();
+            services.AddSingleton<IUserRepository, UserRepository>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
