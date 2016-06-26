@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using RouteConstraints.Models;
 
 namespace RouteConstraints.Controllers
@@ -12,10 +11,9 @@ namespace RouteConstraints.Controllers
         public UsersController(IUserRepository repo)
         {
             usersRepository = repo;
-
         }
 
-        [HttpGet("handle:alpha")]
+        [HttpGet("{handle:alpha}", Order = 1)]
         public IActionResult GetByHandle(string handle)
         {
             var user = usersRepository.GetUserByHandle(handle);
@@ -32,10 +30,10 @@ namespace RouteConstraints.Controllers
             return new OkObjectResult(user);
         }
 
-        [HttpGet("{email:regex()}")]
-        public IActionResult Get(string email)
+        [HttpGet("{email:regex(^\\S+@\\S+$)}", Order = 2)]
+        public IActionResult GetByEmail(string email)
         {
-            var user = usersRepository.GetUserByHandle(email);
+            var user = usersRepository.GetUserByEmail(email);
             if (user == null)
             {
                 return new BadRequestObjectResult(
@@ -46,7 +44,7 @@ namespace RouteConstraints.Controllers
                                         Message = $"No User with email {email} exists in the database!"
                                     });
             }
-            return new OkObjectResult(email);
+            return new OkObjectResult(user);
         }
     }
 }
