@@ -6,14 +6,14 @@ namespace Empty.Controllers
     public class GreetingsController
     {
         [HttpGet]
-        //public string Get()
-        //{
-        //    return "Greetings from Web API!";
-        //}
-
-        public IActionResult Get()
+        public string Get()
         {
-            return new OkObjectResult(new { greeting = "Greetings from Web API!" });
+            return "Greetings from Web API!";
         }
+
+        //public IActionResult Get()
+        //{
+        //    return new OkObjectResult(new { greeting = "Greetings from Web API!" });
+        //}
     }
 }
