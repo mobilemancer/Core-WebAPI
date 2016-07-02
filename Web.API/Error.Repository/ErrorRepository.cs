@@ -5,7 +5,6 @@ namespace Error.Repository
     public class ErrorRepository : IErrorRepository
     {
         private static ConcurrentDictionary<int, Error> repo { get; set; }
-        private static int id;
         public ErrorRepository()
         {
             repo = new ConcurrentDictionary<int, Error>();
