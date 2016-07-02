@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json.Serialization;
 using RouteConstraints.Models;
 
 namespace RouteConstraints
@@ -28,9 +27,9 @@ namespace RouteConstraints
         public void ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
-            services.AddMvc()
-                .AddJsonOptions(option =>
-                option.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver());
+            // From rc2 to v1.0.0 adding a json resolver is not needed. For non json formatting add default resolver
+            services.AddMvc();
+                //.AddJsonOptions(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver());
 
             services.AddSingleton<IDroidRepository, DroidRepository.DroidRepository>();
             services.AddSingleton<IErrorRepository, ErrorRepository>();
