@@ -13,6 +13,11 @@ namespace RouteConstraints.Controllers
             usersRepository = repo;
         }
 
+        /// <summary>
+        /// Alpha as a constraint
+        /// </summary>
+        /// <param name="handle">a users handle</param>
+        /// <returns>a user with the given handle</returns>
         [HttpGet("{handle:alpha}", Order = 1)]
         public IActionResult GetByHandle(string handle)
         {
@@ -30,6 +35,11 @@ namespace RouteConstraints.Controllers
             return new OkObjectResult(user);
         }
 
+        /// <summary>
+        /// Regex as a constraint
+        /// </summary>
+        /// <param name="email">a users email address</param>
+        /// <returns>a user with the given email address</returns>
         [HttpGet("{email:regex(^\\S+@\\S+$)}", Order = 2)]
         public IActionResult GetByEmail(string email)
         {
@@ -46,5 +56,6 @@ namespace RouteConstraints.Controllers
             }
             return new OkObjectResult(user);
         }
+
     }
 }

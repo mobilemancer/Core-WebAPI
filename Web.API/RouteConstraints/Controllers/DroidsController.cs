@@ -47,6 +47,7 @@ namespace RouteConstraints.Controllers
         /// No constraints
         /// </summary>
         /// <returns>all droids in the database</returns>
+        //[HttpGet("~/thesearethedroids")]        
         [HttpGet]
         public IActionResult Get()
         {
@@ -59,7 +60,7 @@ namespace RouteConstraints.Controllers
         /// </summary>
         /// <param name="id">droid id</param>
         /// <returns>A droid with a specific Id</returns>
-        [HttpGet("{id:int}", Order = 0)]
+        [HttpGet("{id:int}", Name = "GetDroidById", Order = 0)]
         public IActionResult GetById(int id)
         {
             var droid = droidRepo.Get(id);
@@ -318,7 +319,8 @@ namespace RouteConstraints.Controllers
             }
 
 
-            return new CreatedAtRouteResult(new { controller = "Droids", model = droid.Name }, droid);
+            //return new CreatedAtRouteResult("GetDroidById", new { id = droid.Id }, droid);
+            return new CreatedAtRouteResult(new { Controller = "droids", Action = nameof(GetById), id = droid.Id }, droid);
         }
 
         [HttpDelete("{name}")]
@@ -365,10 +367,4 @@ namespace RouteConstraints.Controllers
         }
     }
 
-
-    //public class Error
-    //{
-    //    public int HttpCode { get; set; }
-    //    public string Message { get; set; }
-    //}
 }
