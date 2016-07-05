@@ -59,7 +59,7 @@ namespace RouteConstraints.Controllers
         /// </summary>
         /// <param name="id">droid id</param>
         /// <returns>A droid with a specific Id</returns>
-        [HttpGet("{id:int}", Order = 1)]
+        [HttpGet("{id:int}", Order = 0)]
         public IActionResult GetById(int id)
         {
             var droid = droidRepo.Get(id);
@@ -83,7 +83,7 @@ namespace RouteConstraints.Controllers
         /// </summary>
         /// <param name="withWeapons">toggle armaments</param>
         /// <returns>A droid with or without armaments</returns>
-        [HttpGet("{withWeapons:bool}")]
+        [HttpGet("{withWeapons:bool}", Order = 2)]
         public IActionResult GetWithArmaments(bool withWeapons)
         {
             var droids = droidRepo.GetAll();
@@ -229,7 +229,7 @@ namespace RouteConstraints.Controllers
         /// </summary>
         /// <param name="creditBalance">an credit limit</param>
         /// <returns>any droid with a given credit balance over given limit</returns>
-        [HttpGet("{creditBalance:long}", Order = 0)]
+        [HttpGet("{creditBalance:long}", Order = 1)]
         public IActionResult GetByCreditBalance(long creditBalance)
         {
             IEnumerable<Droid> droids = droidRepo.GetByCreditBalance(creditBalance);
@@ -277,8 +277,8 @@ namespace RouteConstraints.Controllers
         /// </summary>
         /// <param name="name">droid name</param>
         /// <returns>an eventual droid matching the given name</returns>
-        [HttpGet("{name:length(5)}")]
-        public IActionResult Get(string name)
+        [HttpGet("{name:length(5)}", Order = 10)]
+        public IActionResult GetByName(string name)
         {
             var droid = droidRepo.Get(name);
             if (droid == null)
