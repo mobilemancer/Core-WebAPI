@@ -84,7 +84,7 @@ namespace RouteConstraints.Controllers
         /// </summary>
         /// <param name="withWeapons">toggle armaments</param>
         /// <returns>A droid with or without armaments</returns>
-        [HttpGet("{withWeapons:bool}")]
+        [HttpGet("{withWeapons:bool}", Order = 2)]
         public IActionResult GetWithArmaments(bool withWeapons)
         {
             var droids = droidRepo.GetAll();
@@ -278,8 +278,8 @@ namespace RouteConstraints.Controllers
         /// </summary>
         /// <param name="name">droid name</param>
         /// <returns>an eventual droid matching the given name</returns>
-        [HttpGet("{name:length(5)}")]
-        public IActionResult Get(string name)
+        [HttpGet("{name:length(5)}", Order = 10)]
+        public IActionResult GetByName(string name)
         {
             var droid = droidRepo.Get(name);
             if (droid == null)
