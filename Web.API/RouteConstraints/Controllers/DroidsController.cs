@@ -115,7 +115,7 @@ namespace RouteConstraints.Controllers
         /// </summary>
         /// <param name="entryDate">date of registration in the galactic registry</param>
         /// <returns>all droids registered in the galactic registry after a specified date</returns>
-        [HttpGet("{entryDate:datetime}")]
+        [HttpGet("{entryDate:datetime}", Order = 8)]
         public IActionResult GetByEntryDate(DateTime entryDate)
         {
             var droids = droidRepo.GetAllFromEntryDate(entryDate);
@@ -137,7 +137,7 @@ namespace RouteConstraints.Controllers
         /// </summary>
         /// <param name="height">a given height</param>
         /// <returns>all droids over a given height</returns>
-        [HttpGet("{height:decimal}", Order = 7)]
+        [HttpGet("{height:decimal}", Order = 6)]
         public IActionResult GetByHeightDecimal(decimal height)
         {
             var droids = droidRepo.GetAllTallerThan(height);
@@ -159,7 +159,7 @@ namespace RouteConstraints.Controllers
         /// </summary>
         /// <param name="height">a given height</param>
         /// <returns>all droids over a given height</returns>
-        [HttpGet("{height:double}", Order = 3)]
+        [HttpGet("{height:double}", Order = 5)]
         public IActionResult GetByHeightDouble(double height)
         {
             decimal convertedHeight = (decimal)height;

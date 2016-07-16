@@ -1,4 +1,5 @@
-﻿using System.Collections.Concurrent;
+﻿using System;
+using System.Collections.Concurrent;
 
 namespace Error.Repository
 {
@@ -18,7 +19,15 @@ namespace Error.Repository
             {
                 ErrorCode = 101,
                 HttpCode = 404,
-                Message = "Dude, shit happens!"
+                Message = "Too many fingers on keyboard error!"
+            };
+            repo.TryAdd(error.ErrorCode, error);
+
+            error = new Error
+            {
+                ErrorCode = 666,
+                HttpCode = 404,
+                Message = "Is it just me or is it getting hot in here?"
             };
             repo.TryAdd(error.ErrorCode, error);
         }
@@ -27,6 +36,7 @@ namespace Error.Repository
         {
             Error error;
             repo.TryGetValue(errorCode, out error);
+            Console.WriteLine(error);
             return error;
         }
     }
