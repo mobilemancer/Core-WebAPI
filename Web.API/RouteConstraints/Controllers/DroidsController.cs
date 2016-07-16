@@ -15,38 +15,12 @@ namespace RouteConstraints.Controllers
             droidRepo = repository;
         }
 
-        //  { "int", typeof(IntRouteConstraint) },
-        //  { "bool", typeof(BoolRouteConstraint) },
-        //  { "datetime", typeof(DateTimeRouteConstraint) },
-        //  { "decimal", typeof(DecimalRouteConstraint) },
-        //  { "double", typeof(DoubleRouteConstraint) },
-        //  { "float", typeof(FloatRouteConstraint) },
-        //  { "guid", typeof(GuidRouteConstraint) },
-        //  { "long", typeof(LongRouteConstraint) },
-
-        //  // Length constraints
-        //  { "minlength", typeof(MinLengthRouteConstraint) },
-        //  { "maxlength", typeof(MaxLengthRouteConstraint) },
-        //  { "length", typeof(LengthRouteConstraint) },
-
-        //  // Min/Max value constraints
-        //  { "min", typeof(MinRouteConstraint) },
-        //  { "max", typeof(MaxRouteConstraint) },
-        //  { "range", typeof(RangeRouteConstraint) },
-
-        //  // Regex-based constraints
-        //  { "alpha", typeof(AlphaRouteConstraint) },
-        //  { "regex", typeof(RegexInlineRouteConstraint) },
-
-        //  {"required", typeof(RequiredRouteConstraint) },
-
-
-
 
         /// <summary>
         /// No constraints
         /// </summary>
         /// <returns>all droids in the database</returns>
+        // Uncomment the row below to override the controllers base route
         //[HttpGet("~/thesearethedroids")]        
         [HttpGet]
         public IActionResult Get()
