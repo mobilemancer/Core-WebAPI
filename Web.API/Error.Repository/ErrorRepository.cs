@@ -13,7 +13,7 @@ namespace Error.Repository
 
         }
 
-        private void Seed()
+        private static void Seed()
         {
             var error = new Error
             {

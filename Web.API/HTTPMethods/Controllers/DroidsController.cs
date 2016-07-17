@@ -14,7 +14,7 @@ namespace HTTPMethods.Controllers
 
 
         /// <summary>
-        /// No constraints
+        /// Get all the droids
         /// </summary>
         /// <returns>all droids in the database</returns>
         // Uncomment the row below to override the controllers base route
@@ -26,11 +26,11 @@ namespace HTTPMethods.Controllers
         }
 
         /// <summary>
-        /// String of a specific length used as a constraint
+        /// Get a droid by name
         /// </summary>
         /// <param name="name">droid name</param>
         /// <returns>an eventual droid matching the given name</returns>
-        [HttpGet("{name}")]
+        [HttpGet("{name}", Name = nameof(GetByName))]
         public IActionResult GetByName(string name)
         {
             var droid = droidRepo.Get(name);
@@ -47,6 +47,11 @@ namespace HTTPMethods.Controllers
             return new OkObjectResult(droidRepo.Get(name));
         }
 
+        /// <summary>
+        /// Store a new droid
+        /// </summary>
+        /// <param name="droid">a droid</param>
+        /// <returns>route to the stored droid</returns>
         [HttpPost]
         public IActionResult Post([FromBody] Droid droid)
         {
@@ -70,9 +75,14 @@ namespace HTTPMethods.Controllers
                 });
             }
 
-            return new CreatedAtRouteResult(new { Controller = "droids", Action = nameof(GetByName), id = droid.Name }, droid);
+            return new CreatedAtRouteResult(nameof(GetByName), new { name = droid.Name }, droid);
         }
 
+        /// <summary>
+        /// Remove a droid
+        /// </summary>
+        /// <param name="name">name of the droid</param>
+        /// <returns></returns>
         [HttpDelete("{name}")]
         public IActionResult Delete(string name)
         {
@@ -90,6 +100,12 @@ namespace HTTPMethods.Controllers
             return new NoContentResult();
         }
 
+        /// <summary>
+        /// Update a droid
+        /// </summary>
+        /// <param name="name">name of the droid</param>
+        /// <param name="droid">new data</param>
+        /// <returns>the updated droid</returns>
         [HttpPut("{name}")]
         public IActionResult Update(string name, [FromBody] Droid droid)
         {
@@ -115,6 +131,6 @@ namespace HTTPMethods.Controllers
 
             return new OkObjectResult(droid);
         }
-    
+
     }
 }
