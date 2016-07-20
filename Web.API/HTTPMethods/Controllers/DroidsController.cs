@@ -83,7 +83,7 @@ namespace HTTPMethods.Controllers
         /// Remove a droid
         /// </summary>
         /// <param name="name">name of the droid</param>
-        /// <returns></returns>
+        /// <returns>HTTP 204 No Content on success</returns>
         [HttpDelete("{name}")]
         public IActionResult Delete(string name)
         {
@@ -143,7 +143,7 @@ namespace HTTPMethods.Controllers
         [HttpPatch("{name}")]
         public IActionResult PartialUpdate(string name, [FromBody] Droid droid)
         {
-            if (!ModelState.IsValid || name == null)
+            if (!ModelState.IsValid || string.IsNullOrEmpty(name))
             {
                 return new BadRequestObjectResult(new Error.Repository.Error
                 {
